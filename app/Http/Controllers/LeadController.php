@@ -7,6 +7,7 @@ use App\Lead;
 
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Http;
 
 class LeadController extends Controller
 {
@@ -38,18 +39,17 @@ class LeadController extends Controller
         $input = $request->except('_token');
         $lead = Lead::create($input);
 
-        $client = new Client();
+        //$client = new Client();
 
         $amoData = [
             'url'             => 'quiz.sellyourcompany.uppercase.kz',
             'name'            => "Квиз - Продажа компаний",
             'phone'           => $request['phone'],
-            'lead_comment'    => $request['text']
+            'lead_comment'    => $request['text'],
+            'utm'             => $request['utm']
         ];
 
-        $result = $client->post('https://amoconnect.ru/amo-ipravo/api/slug/uppercase-quiz-sell', [
-            'form_params' => $amoData
-        ]);
+        $response = Http::asForm()->post('https://amoconnect.ru/amo-ipravo/api/slug/uppercase-quiz-sell',$amoData);
 
         //ROISTAT BEGIN
         if (isset($request['phone'])) {
@@ -64,6 +64,8 @@ class LeadController extends Controller
         	file_get_contents("https://cloud.roistat.com/api/proxy/1.0/leads/add?" . http_build_query($roistatData));
         }
         //ROISTAT END
+
+        return response()->json($response->json(),200);
         
     }
 

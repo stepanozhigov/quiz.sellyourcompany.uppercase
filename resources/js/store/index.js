@@ -35,9 +35,23 @@ export default new Vuex.Store({
         isMobile: false,
         isCallBack: false,
         isCallBackSend: false,
+        utm: {
+            utm_source: false,
+            utm_campaign: false,
+            utm_medium: false,
+            utm_term: false,
+            utm_content: false
+        }
 
     },
     mutations: {
+        SET_UTM: (state,payload) => {
+            state.utm.utm_source = payload.utm_source,
+            state.utm.utm_content = payload.utm_source,
+            state.utm.utm_campaign = payload.utm_campaign,
+            state.utm.utm_medium = payload.utm_medium,
+            state.utm.utm_term = payload.utm_term
+        },
         nextStep(s, val){
             if (val){
                 s.step = val
@@ -76,6 +90,9 @@ export default new Vuex.Store({
         }
     },
     actions: {
+        setUtm: (context,utm) => {
+            context.commit('SET_UTM',utm);
+        },
         nextStep({commit}, val){
             commit('nextStep', val)
         },
@@ -93,6 +110,7 @@ export default new Vuex.Store({
         }
     },
     getters: {
+        utm : state=>state.utm,
         siteUrl: s => s.siteUrl,
         phoneSite: s => s.phoneSite,
         phoneSiteFormat: s => s.phoneSiteFormat,
