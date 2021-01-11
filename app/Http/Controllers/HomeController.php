@@ -13,7 +13,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        // $this->middleware('auth');
     }
 
     /**
@@ -21,8 +21,10 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request, $lang = 'ru')
     {
-        return view('home');
+        $match = preg_match('/^en$|^ru$/',$lang);
+        if(!$match) $lang = 'ru';
+        return view('layouts.quiz', ['lang' => $lang]);
     }
 }

@@ -29,12 +29,14 @@ Route::group(['prefix' => 'adminpanel', 'middleware' => 'auth'], function () {
     
 });
 
-Route::get('/', function () {
-    return redirect()->route('index.ru');
-});
+// Route::get('/', function () {
+//     return redirect()->route('index.ru');
+// });
 
-Route::view('/ru', 'layouts.quiz', ['lang' => 'ru'])->name('index.ru');
-Route::view('/en', 'layouts.quiz', ['lang' => 'en'])->name('index.en');
+Route::get('/{lang?}', 'HomeController@index')->name('index');
+
+// Route::view('/ru', 'layouts.quiz', ['lang' => 'ru'])->name('index.ru');
+// Route::view('/en', 'layouts.quiz', ['lang' => 'en'])->name('index.en');
 
 
 Route::post('/leads', 'LeadController@store')->name('leads.store');
